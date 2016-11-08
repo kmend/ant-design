@@ -4,7 +4,6 @@ import CheckboxGroup from './Group';
 import classNames from 'classnames';
 import PureRenderMixin from 'rc-util/lib/PureRenderMixin';
 import splitObject from '../_util/splitObject';
-import getTriggerHandlers from '../_util/getTriggerHandlers';
 
 export interface CheckboxProps {
   /** 指定当前是否选中 */
@@ -30,8 +29,10 @@ export default class Checkbox extends React.Component<CheckboxProps, any> {
     return PureRenderMixin.shouldComponentUpdate.apply(this, args);
   }
   render() {
-    const [{ prefixCls, style, children, className, indeterminate }, restProps] = splitObject(
-      this.props, ['prefixCls', 'style', 'children', 'className', 'indeterminate']
+    const [{ prefixCls, style, children, className, indeterminate, onMouseDown,
+      onTouchStart, onMouseEnter, onMouseLeave }, restProps] = splitObject(
+      this.props, ['prefixCls', 'style', 'children', 'className', 'indeterminate',
+      'onMouseDown', 'onTouchStart', 'onMouseEnter', 'onMouseLeave']
     );
     const classString = classNames({
       [className]: !!className,
@@ -41,7 +42,13 @@ export default class Checkbox extends React.Component<CheckboxProps, any> {
       [`${prefixCls}-indeterminate`]: indeterminate,
     });
     return (
-      <label className={classString} style={style} {...getTriggerHandlers(this.props)}>
+      <label
+        className={classString}
+        style={style}
+        onTouchStart={onTouchStart}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
         <RcCheckbox
           {...restProps}
           prefixCls={prefixCls}
